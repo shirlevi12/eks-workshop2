@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mariadb
+  namespace: shir
+spec:
+  serviceName: mariadb
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mariadb
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+        - name: mariadb
+          image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/shir/k8s:mariadb
+          args:
+            - '--default-authentication-plugin=mysql_native_password'
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "wordpress"
+            - name: MYSQL_DATABASE
+              value: "wordpress"
+            - name: MYSQL_USER
+              value: "wordpress"
+            - name: MYSQL_PASSWORD
+              value: "wordpress"
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: mariadb-data-shir 
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mariadb-data-shir
+          persistentVolumeClaim:
+            claimName: mariadb-pvc-shir
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mariadb-pvc-shir
+  namespace: shir
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: ebs-sc-nitzanim
+

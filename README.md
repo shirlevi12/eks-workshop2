@@ -1,6 +1,6 @@
 # Kubernetes WordPress & MariaDB Deployment on EKS
 
-This repository contains Kubernetes configuration files to deploy a WordPress application and a MariaDB database on an Amazon EKS cluster. Below is an explanation of the key components involved in the deployment.
+This repository contains Kubernetes configuration files to deploy a WordPress application and a MariaDB database on an Amazon EKS cluster. 
 
 ## Prerequisites
 
